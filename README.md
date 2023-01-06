@@ -27,4 +27,4 @@ Btw, `/log` is the Discord command to use.
 
 ## License
 
-[MIT](https://github.com/tpeng3/LogExportBot/blob/main/LICENSE.txt)
+[MIT](https://github.com/tpeng3/LogExportBot/blob/master/LICENSE.txt)
