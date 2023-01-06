@@ -1,0 +1,18 @@
+{
+  "name": "logexportbot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node bot.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Tina Peng",
+  "license": "MIT",
+  "description": "A Discord bot to export channel messages to a simple text file (mostly for RP group use)",
+  "dependencies": {
+    "@discordjs/rest": "^1.5.0",
+    "discord-api-types": "^0.37.26",
+    "discord.js": "^13.12.0"
+  }
+}
