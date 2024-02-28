@@ -1,0 +1,5 @@
+{
+  "token": "<INSERT-BOT-TOKEN>",
+  "clientID": "<DISCORD-CLIENT-ID>",
+  "guildID": "<SERVER-ID>"
+}
