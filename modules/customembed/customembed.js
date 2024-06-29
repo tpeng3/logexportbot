@@ -1,4 +1,4 @@
-import { EmbedBuilder, Events, MessageType } from "discord.js";
+const { EmbedBuilder, Events, MessageType } = require("discord.js");
 
 export default function (client) {
   client.on(Events.MessageCreate, async (message) => {
