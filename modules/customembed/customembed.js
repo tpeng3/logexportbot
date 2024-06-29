@@ -1,5 +1,4 @@
 import { EmbedBuilder, Events, MessageType } from "discord.js";
-import { rError } from "../embedPages";
 
 export default function (client) {
   client.on(Events.MessageCreate, async (message) => {
@@ -61,18 +60,18 @@ export default function (client) {
           await message.channel.send({ embeds: [embed] });
         }
       } catch (e) {
-        await message.channel.send({
-          embeds: [
-            new EmbedBuilder()
-              .setColor("#f0ac97")
-              .setDescription(
-                "There was an error formatting the embed:\n" +
-                  e +
-                  "\n\nReact with ❌ to delete this message."
-              ),
-          ],
-        });
+        await rError(message, "There was an error formatting the embed:\n" + e);
       }
     }
+  });
+}
+
+function rError(message, msg) {
+  message.channel.send({
+    embeds: [
+      new EmbedBuilder()
+        .setColor("#f0ac97")
+        .setDescription(msg + "\n\nReact with ❌ to delete this message."),
+    ],
   });
 }
