@@ -1,6 +1,6 @@
 const { EmbedBuilder, Events, MessageType } = require("discord.js");
 
-export default function (client) {
+module.exports = function (client) {
   client.on(Events.MessageCreate, async (message) => {
     let args = message.content.split(" ");
     const command = args[0];
@@ -64,7 +64,7 @@ export default function (client) {
       }
     }
   });
-}
+};
 
 function rError(message, msg) {
   message.channel.send({
