@@ -21,6 +21,7 @@ client.on("ready", async () => {
   require("./modules/dice/dice")(client);
   require("./modules/poll/poll")(client);
   require("./modules/signup/signup")(client);
+  require("./modules/customembed/customembed")(client);
 
   process.on("uncaughtException", (e) => {
     console.log(e);
