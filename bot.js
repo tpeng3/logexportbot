@@ -1,7 +1,7 @@
 // bot.js is the main file, start the bot from here: ``node bot`` in console.
 require("dotenv").config();
 require("./modules/global");
-const { Client, GatewayIntentBits, REST, Routes } = require("discord.js");
+const { Client, Partials, GatewayIntentBits, REST, Routes } = require("discord.js");
 global.client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -9,7 +9,9 @@ global.client = new Client({
     GatewayIntentBits.DirectMessages,
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildMessageReactions,
+    GatewayIntentBits.MessageContent,
   ],
+  partials: [Partials.Message, Partials.Channel, Partials.Reaction],
 });
 
 client.on("ready", async () => {
@@ -30,7 +32,7 @@ client.on("ready", async () => {
     console.log(e);
   });
 
-  // refresh slash commands in all active guilds
+  // refresh slash commands
   const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
   const data = await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
     body: client.commands,

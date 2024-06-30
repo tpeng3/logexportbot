@@ -5,15 +5,14 @@ module.exports = function (client) {
     let args = message.content.split(" ");
     const command = args[0];
     args.shift();
-
     if (command === ">embed") {
       const link = args[0].split("/");
       const channelId = link.at(-2);
       const messageId = link.at(-1);
       const channel = message.guild.channels.cache.get(channelId);
-      if (!channel) return rError(message, "Please provide a Discord link to embed.");
+      if (!channel) return rError(message, "Error: Please provide a Discord link to embed.");
       const post = await channel.messages.fetch(messageId);
-      if (!post) return rError(message, "Couldn't find a valid Discord message to embed.");
+      if (!post) return rError(message, "Error: Couldn't find a valid Discord message to embed.");
 
       try {
         const embed = new EmbedBuilder().setColor("#67A4A6");
@@ -64,6 +63,31 @@ module.exports = function (client) {
       }
     }
   });
+
+  client.on(Events.MessageReactionAdd, async (reaction, user) => {
+    // When a reaction is received, check if the structure is partial
+    if (reaction.partial) {
+      // If the message this reaction belongs to was removed, the fetching might result in an API error which should be handled
+      try {
+        await reaction.fetch();
+      } catch (error) {
+        console.error("Something went wrong when fetching the message:", error);
+        // Return as `reaction.message.author` may be undefined/null
+        return;
+      }
+    }
+
+    if (reaction.emoji.name === "❌") {
+      // only delete bot messages that you or the bot created
+      if (
+        (!reaction.message.interaction && client.application.id === reaction.message.author.id) ||
+        (client.application.id === reaction.message.author.id &&
+          reaction.message.interaction.user.id === user.id)
+      ) {
+        reaction.message.delete();
+      }
+    }
+  });
 };
 
 function rError(message, msg) {
@@ -71,7 +95,7 @@ function rError(message, msg) {
     embeds: [
       new EmbedBuilder()
         .setColor("#f0ac97")
-        .setDescription(msg + "\n\nReact with ❌ to delete this message."),
+        .setDescription(msg + "\n\n(React with ❌ to delete this message.)"),
     ],
   });
 }
