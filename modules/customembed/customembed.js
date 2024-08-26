@@ -61,6 +61,40 @@ module.exports = function (client) {
       } catch (e) {
         await rError(message, "There was an error formatting the embed:\n" + e);
       }
+    } else if (command === ">ping") {
+      const MESSAGE_LINK_REGEX = new RegExp(
+        `(https?:\/\/)?(www.)?(discord(app)?.com\/channels)+\/${message.guild.id}\/+\\d+\/+\\d+`,
+        "g"
+      );
+      if (!message.guild?.channels) return;
+
+      const preview = [...message?.content.matchAll(MESSAGE_LINK_REGEX)];
+      const split = message.content.split(" ");
+      const emoji = split.length === 3 ? split.at(-1)?.trim() : null;
+      let users = [];
+      for (let i in preview) {
+        try {
+          const link = preview[i][0].split("/");
+          const channelId = link.at(-2);
+          const messageId = link.at(-1);
+          const channel = message.guild.channels.cache.get(channelId);
+          const post = await channel.messages.fetch(messageId);
+          for (const reaction of post.reactions.cache.values()) {
+            if (!emoji || reaction.emoji.name === emoji) {
+              let reactedUsers = await reaction.users.fetch();
+              users = [...users, ...reactedUsers.map((i) => i.id)];
+            }
+          }
+        } catch (e) {
+          console.log("Could not ping from post: " + e);
+        }
+      }
+
+      if (users.length > 0) {
+        await message.channel.send({
+          content: [...new Set(users)].map((id) => `<@${id}>`).join(" "),
+        });
+      }
     }
   });
 
