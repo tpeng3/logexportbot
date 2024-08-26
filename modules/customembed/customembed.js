@@ -80,7 +80,7 @@ module.exports = function (client) {
           const channel = message.guild.channels.cache.get(channelId);
           const post = await channel.messages.fetch(messageId);
           for (const reaction of post.reactions.cache.values()) {
-            if (!emoji || reaction.emoji.name === emoji) {
+            if (!emoji || reaction.emoji.name === emoji || emoji.includes(reaction.emoji.id)) {
               let reactedUsers = await reaction.users.fetch();
               users = [...users, ...reactedUsers.map((i) => i.id)];
             }
