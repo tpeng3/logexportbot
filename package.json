@@ -1,17 +1,25 @@
 {
   "name": "logexportbot",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "bot.ts",
+  "type": "module",
   "scripts": {
-    "start": "node bot.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node bot.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rimraf built && tsc -p tsconfig.json && cp .env built/.env"
   },
   "keywords": [],
   "author": "Tina Peng",
   "license": "MIT",
   "description": "A Discord bot to export channel messages to a simple text file (mostly for RP group use)",
   "dependencies": {
-    "discord.js": "^14.9.0",
-    "dotenv": "^16.0.3"
+    "@dice-roller/rpg-dice-roller": "^5.5.3",
+    "discord.js": "^14.28.1",
+    "dotenv": "^16.0.3",
+    "quick.db": "^9.1.7",
+    "write-file-atomic": "^8.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2"
   }
 }
